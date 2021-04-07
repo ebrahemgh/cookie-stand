@@ -16,7 +16,8 @@ function Salamon(location, min, max, AvgCookie) {
     this.hourlySales = [];
     this.dailySales = 0;
     this.coockies = [];
-    coustemrs = [];
+    this.coustemrs = [];
+    this.total = 0;
 }
 
 let stores = [];
@@ -24,10 +25,11 @@ let stores = [];
 
 Salamon.prototype.getCoustemrs = function ()   // GET THE RANDOM number of customers 
 {
+    
     for (let i = 0; i < hours.length; i++) {
-        // console.log("from loop");
+        console.log("from loop");
         // console.log(randomNumber(this.min, this.max));
-        coustemrs.push(randomNumber(this.min, this.max));
+        this.coustemrs.push(randomNumber(this.min, this.max));
        
     }
     // return coustemrs;
@@ -35,128 +37,257 @@ Salamon.prototype.getCoustemrs = function ()   // GET THE RANDOM number of custo
 }
 Salamon.prototype.calcCockies = function ()         // GET THE AVARAGE OF CUSTOMERS PER HOURE
 {
+    
     for (let i = 0; i < hours.length; i++) {
         console.log("from the seconed loop")
-        console.log(this.AvgCookie)
-        console.log(coustemrs)
-        let anything = this.AvgCookie * coustemrs[i];
-        console.log(anything);
-        this.coockies.push(Math.floor(anything));
+        // console.log(this.AvgCookie)
+        // console.log(coustemrs)
+        // let anything = this.AvgCookie * coustemrs[i];
+        // console.log(anything);
+        // let result = Math.floor(this.coustemrs[i] * this.AvgCookie);
+        // console.log(result);
+        this.coockies.push(Math.floor((this.coustemrs[i])*this.AvgCookie));
         this.total += this.coockies[i];
     }
     // return coockies;
-    console.log(this.coockies);
+    // console.log(this.coockies);
 }
 const seattle = new Salamon('seattle', 23, 65, 6.3);
 const tokyo = new Salamon('tokyo', 3, 24, 1.2);
 const dubai = new Salamon('dubai', 11, 38, 3.7);
 const paris = new Salamon('paris', 20, 38, 2.3);
 const lima = new Salamon('lima', 3, 24, 1.2);
-paris.getCoustemrs();
 
 
-// paris.calcCockies();
 // paris.getCoustemrs();
-// console.log(paris.calcCockies);
+// console.log(paris.coustemrs);
+// tokyo.getCoustemrs();
+// tokyo.calcCockies();
+// console.log(tokyo.coockies);
 
-// console.log('salamons', Salamon);
-// for (let i = 0; i < Salamon.length; i++) {
-//     Salamon[i].getCoustemrs();
+seattle.getCoustemrs();
+console.log(seattle.coustemrs);
+seattle.calcCockies()
+console.log(seattle.coockies);
 
-// }
 
-///////////////////////////////////////////////// making the table 
+
+
+
+
+
+
+// making the global table
 let parent = document.getElementById('parent');
-let table = document.createElement('table');
-parent.appendChild(table);
+//create table in globel
+let bigtable = document.createElement('table');
+//appeand
+parent.appendChild(bigtable);
 
-let Header = function () {
-   
-    let trElemnt = document.createElement('tr');
-    table.appendChild(trElemnt);
+
+
+
+
+
+// bigtable.style.borderColor = "red";
+function Header() {
     
-    let firstTh = document.createElement('th');
-    trElemnt.appendChild(firstTh);
-    trElemnt.textContent='name';
+    // making the elemnts
+    let theFirstRow = document.createElement('tr'); //bigger that row1
+    let row1 = document.createElement('th');
 
-    for (let i = 0; i < hours.length; i++){
-        // create the first row
-        let hoursth = document.createElement('th');
-        trElemnt.appendChild(hoursth);
-        hoursth.textContent=hours[i];
+    // appending childs
+    bigtable.appendChild(theFirstRow);
 
-
+    theFirstRow.appendChild(row1);
+    // row1.textContent = 'name';
+        for (let i = 0; i < hours.length; i++){
+         hoursRows = document.createElement('th');
+        theFirstRow.appendChild(hoursRows);
+        hoursRows.textContent=hours[i];
     }
     let finalTh = document.createElement('th');
-    trElemnt.appendChild(finalTh);
-    finalTh.textContent = 'daily locations table';
+    theFirstRow.appendChild(finalTh);
+    finalTh.textContent = "daily location total";
 
 }
+// finished the header of table 
+console.log(Header());
+
+
+
+
+
+
+
+
+
+
+//////// making the main table 
 
 Salamon.prototype.render = function () {
     
-
     let storeRow = document.createElement('tr');
-    table.appendChild(storeRow);
+    bigtable.appendChild(storeRow);
 
-    // first elemnt 
-    let nameTd = document.createElement('td');
-    storeRow.appendChild(nameTd);
-    nameTd.textContent = this.name;
+    let nameCoulomn = document.createElement('td');
+    storeRow.appendChild(nameCoulomn);
+    nameCoulomn.textContent = this.location;
 
-    for (let i = 0; hours < hours.length;i++){
-        let coockiesTd = document.createElement('td');
-
-        storeRow.appendChild(coockiesTd);
-
-        coockiesTd.textContent = this.coustemrs[i];
-    }
-    let totaltd = document.createElement('td');
-    storeRow.appendChild(totaltd);
-    totaltd.textContent = this.total;
-
-    
-}
-
-function makingFooter() {
-    
-    let footerRow = document.createElement('tr');
-    table.appendChild(footerRow);
-
-    let firstTh = document.createElement('th');
-    footerRow.appendChild(firstTh);
-    firstTh.textContent = 'tatal';
-
-    let totalForEachHour;
-    let mostTotal = 0;
-
-    for (let i = 0; i < hours.length; i++){
-        totalForEachHour = 0;
-        for (let x = 0; x < stores.length; x++){
-            totalForEachHour += stores[x].coustemrs[i];
-            mostTotal += stores[x].coustemrs[x];
-        }
-        console.log(totalForEachHour);
-        let footerTh = document.createElement('th');
-        footerRow.appendChild(footerTh);
-        footerTh.textContent = totalForEachHour;
+    for (let x = 0; x < hours.length; x++){
+        let mainElemnts = document.createElement('td');
+        storeRow.appendChild(mainElemnts);
+        mainElemnts.textContent = this.coustemrs[x];
     }
 
+    let totalTd = document.createElement('td');
+    storeRow.appendChild(totalTd);
+    totalTd.textContent = this.total;
 
 }
+seattle.getCoustemrs();
+seattle.calcCockies();
+seattle.render();
+
+tokyo.getCoustemrs();
+tokyo.calcCockies();
+tokyo.render();
 
 
-makingFooter();
+dubai.getCoustemrs();
+dubai.calcCockies();
+dubai.render();
+
+paris.getCoustemrs();
+paris.calcCockies();
+paris.render();
+
+lima.getCoustemrs();
+lima.calcCockies();
+lima.render();
 
 
 
 
 
-Header();
-for (let i = 0; i < stores.length; i++){
-    stores[i].getCoustemrs();
-    stores[i].render();
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// document.getElementById("parent").style.border = "thick solid #0000FF";
+// // paris.calcCockies();
+// // paris.getCoustemrs();
+// // console.log(paris.calcCockies);
+
+// // console.log('salamons', Salamon);
+// // for (let i = 0; i < Salamon.length; i++) {
+// //     Salamon[i].getCoustemrs();
+
+// // }
+
+// ///////////////////////////////////////////////// making the table 
+// let parent = document.getElementById('parent');
+// let table = document.createElement('table');
+// parent.appendChild(table);
+
+// let Header = function () {
+   
+//     let trElemnt = document.createElement('tr');
+//     table.appendChild(trElemnt);
+    
+//     let firstTh = document.createElement('th');
+//     trElemnt.appendChild(firstTh);
+//     trElemnt.textContent='name';
+
+//     for (let i = 0; i < hours.length; i++){
+//         // create the first row
+//         let hoursth = document.createElement('th');
+//         trElemnt.appendChild(hoursth);
+//         hoursth.textContent=hours[i];
+
+
+//     }
+//     let finalTh = document.createElement('th');
+//     trElemnt.appendChild(finalTh);
+//     finalTh.textContent = 'daily locations table';
+
+// }
+
+// Salamon.prototype.render = function () {
+    
+
+//     let storeRow = document.createElement('tr');
+//     table.appendChild(storeRow);
+
+//     // first elemnt 
+//     let nameTd = document.createElement('td');
+//     storeRow.appendChild(nameTd);
+//     nameTd.textContent = this.name;
+
+//     for (let i = 0; hours < hours.length;i++){
+//         let coockiesTd = document.createElement('td');
+
+//         storeRow.appendChild(coockiesTd);
+
+//         coockiesTd.textContent = this.coustemrs[i];
+//     }
+//     let totaltd = document.createElement('td');
+//     storeRow.appendChild(totaltd);
+//     totaltd.textContent = this.total;
+
+    
+// }
+
+// function makingFooter() {
+    
+//     let footerRow = document.createElement('tr');
+//     table.appendChild(footerRow);
+
+//     let firstTh = document.createElement('th');
+//     footerRow.appendChild(firstTh);
+//     firstTh.textContent = 'tatal';
+
+//     let totalForEachHour;
+//     let mostTotal = 0;
+
+//     for (let i = 0; i < hours.length; i++){
+//         totalForEachHour = 0;
+//         for (let x = 0; x < stores.length; x++){
+//             totalForEachHour += stores[x].coustemrs[i];
+//             mostTotal += stores[x].coustemrs[x];
+//         }
+//         console.log(totalForEachHour);
+//         let footerTh = document.createElement('th');
+//         footerRow.appendChild(footerTh);
+//         footerTh.textContent = totalForEachHour;
+//     }
+
+
+// }
+
+
+// makingFooter();
+
+
+
+
+
+// Header();
+// for (let i = 0; i < stores.length; i++){
+//     stores[i].getCoustemrs();
+//     stores[i].render();
+// }
 
 
 
