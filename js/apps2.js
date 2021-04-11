@@ -171,6 +171,7 @@ Salamon.prototype.render = function () {
 
 footer = function () {
     let footerRow = document.createElement('tr');
+    footerRow.id = "rowfooter";
     bigtable.appendChild(footerRow);
     let footerRowName = document.createElement('th');
     footerRow.appendChild(footerRowName);
@@ -189,6 +190,37 @@ footer = function () {
         lastTh.textContent = totalForPerHour;
     }
 }
+
+
+
+
+/// making the form
+let bigform = document.getElementById('theform');
+console.log(theform);
+
+bigform.addEventListener('submit', newstore);
+function newstore(event) {
+    event.preventDefault();
+
+    let location = event.target.name.value;
+  let min = event.target.min.value;
+  let max = event.target.max.value;
+    let AvgCookie = event.target.avg.value;
+    
+    newstore = new Salamon(location, min, max, AvgCookie);
+    newstore.getCoustemrs();
+    newstore.calcCockies();
+    newstore.render();
+    document.getElementById('rowfooter').remove();
+    footer();
+
+
+}
+
+
+
+
+
 
 
 parent.style.borderStyle = "dotted solid double dashed";//styling the border
@@ -222,16 +254,6 @@ lima.render();
 // lima.footer();
 
 footer();
-
-
-
-
-
-
-
-
-
-
 
 
 
