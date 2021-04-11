@@ -1,0 +1,41 @@
+
+
+header{
+    margin: 0px;
+    background-color: cadetblue;
+    height: 70px;
+}
+header img{
+    margin-left: 0%;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+header a{
+    position: relative;
+    right: -300px;
+    padding: 10px;
+    bottom: 70px;;
+}
+body{
+    box-sizing: border-box;
+}
+body main div img{
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+     width: 100%;
+     height: 600px;
+}
+main div h1{
+    text-align: center;
+}
+#salamooon{
+    width: 100%;
+}
+body main article h2{
+    text-align: center;
+    background-color: crimson;
+    width: 300px;
+    margin-left: 400px;
+}
