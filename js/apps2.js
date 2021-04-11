@@ -6,6 +6,7 @@ function randomNumber(min, max) {
 let hours = ["6am", "7am", "8am", "9am", "10am", "11am", "12am", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm"];
 let total = 0;
 // let coustemrs = [];
+let stores =[];
 
 
 function Salamon(location, min, max, AvgCookie) {
@@ -18,18 +19,24 @@ function Salamon(location, min, max, AvgCookie) {
     this.coockies = [];
     this.coustemrs = [];
     this.total = 0;
+    this.taotalOfCoust = 0;
+    this.addnum = [];
+    stores.push(this);
+    
 }
-
-let stores = [];
-
+// console.log(stores);
+var addnum = 0;
+// total = 0;
+let coockies = [];
 
 Salamon.prototype.getCoustemrs = function ()   // GET THE RANDOM number of customers 
 {
     
     for (let i = 0; i < hours.length; i++) {
-        console.log("from loop");
         // console.log(randomNumber(this.min, this.max));
         this.coustemrs.push(randomNumber(this.min, this.max));
+        let addnum = this.coustemrs[i];
+        // console.log(this.coustemrs);
        
     }
     // return coustemrs;
@@ -39,25 +46,28 @@ Salamon.prototype.calcCockies = function ()         // GET THE AVARAGE OF CUSTOM
 {
     
     for (let i = 0; i < hours.length; i++) {
-        console.log("from the seconed loop")
-        // console.log(this.AvgCookie)
-        // console.log(coustemrs)
-        // let anything = this.AvgCookie * coustemrs[i];
+        let anything = Math.round((this.coustemrs[i]) * this.AvgCookie);
         // console.log(anything);
-        // let result = Math.floor(this.coustemrs[i] * this.AvgCookie);
-        // console.log(result);
-        this.coockies.push(Math.floor((this.coustemrs[i])*this.AvgCookie));
+        this.coockies.push(anything);
+        // console.log(this.coockies[i]);
+        // console.log(hours.length[i]);
         this.total += this.coockies[i];
     }
-    // return coockies;
-    // console.log(this.coockies);
+    // console.log(this.total);
 }
+
+
+
 const seattle = new Salamon('seattle', 23, 65, 6.3);
+// console.log(seattle);
 const tokyo = new Salamon('tokyo', 3, 24, 1.2);
 const dubai = new Salamon('dubai', 11, 38, 3.7);
 const paris = new Salamon('paris', 20, 38, 2.3);
 const lima = new Salamon('lima', 3, 24, 1.2);
 
+for (let i = 0; i < stores.length; i++) {
+    console.log(stores.length);
+}
 
 // paris.getCoustemrs();
 // console.log(paris.coustemrs);
@@ -65,14 +75,13 @@ const lima = new Salamon('lima', 3, 24, 1.2);
 // tokyo.calcCockies();
 // console.log(tokyo.coockies);
 
+
+
+
 seattle.getCoustemrs();
 console.log(seattle.coustemrs);
 seattle.calcCockies()
 console.log(seattle.coockies);
-
-
-
-
 
 
 
@@ -83,8 +92,6 @@ let parent = document.getElementById('parent');
 let bigtable = document.createElement('table');
 //appeand
 parent.appendChild(bigtable);
-
-
 
 
 
@@ -111,17 +118,13 @@ function Header() {
     finalTh.textContent = "daily location total";
 
 }
+
+
+
+
 // finished the header of table 
 console.log(Header());
-
-
-
-
-
-
-
-
-
+total = 0;
 
 //////// making the main table 
 
@@ -133,39 +136,92 @@ Salamon.prototype.render = function () {
     let nameCoulomn = document.createElement('td');
     storeRow.appendChild(nameCoulomn);
     nameCoulomn.textContent = this.location;
-
+    let totalOs = 0;
     for (let x = 0; x < hours.length; x++){
+        // PRINT DATA ON TABLE
         let mainElemnts = document.createElement('td');
-        storeRow.appendChild(mainElemnts);
-        mainElemnts.textContent = this.coustemrs[x];
+        storeRow.appendChild(mainElemnts);        
+        /***stop***/
+        
+        let elementOs = Math.round(this.coustemrs[x] * this.AvgCookie);
+        mainElemnts.textContent = elementOs;
+        totalOs += elementOs;
+        
     }
 
     let totalTd = document.createElement('td');
     storeRow.appendChild(totalTd);
+    this.total = totalOs;
     totalTd.textContent = this.total;
+    // this.total = 0;
 
 }
+
+// making footer
+// let totalForPerHour = 0;
+
+// PLAN : CALCULATE THE TOTAL OF COOKCKIES PER HOURE FOR EACH RESTURANT
+// 1- HOURS : CONST
+// 2- STORS : SALAMON
+// 3- COOCKIES : STORES
+
+
+
+
+
+footer = function () {
+    let footerRow = document.createElement('tr');
+    bigtable.appendChild(footerRow);
+    let footerRowName = document.createElement('th');
+    footerRow.appendChild(footerRowName);
+    footerRow.textContent = "total";
+
+    for (i = 0; i < hours.length; i++) {
+        let totalForPerHour = 0;
+        // console.log((stores[i]));
+        for (let j = 0; j < stores.length; j++) {
+            totalForPerHour += stores[j].coockies[i];
+            console.log(totalForPerHour);        
+        }
+        // totalForPerHour
+        let lastTh = document.createElement('th');
+        footerRow.appendChild(lastTh);
+        lastTh.textContent = totalForPerHour;
+    }
+}
+
+
+parent.style.borderStyle = "dotted solid double dashed";//styling the border
+// parent.style.columns = "1000px 3";
+bigtable.style.borderStyl="dotted solid double dashed";
+
 seattle.getCoustemrs();
 seattle.calcCockies();
 seattle.render();
+// seattle.footer()
 
 tokyo.getCoustemrs();
 tokyo.calcCockies();
 tokyo.render();
+// tokyo.footer();
 
 
 dubai.getCoustemrs();
 dubai.calcCockies();
 dubai.render();
+// dubai.footer();
 
 paris.getCoustemrs();
 paris.calcCockies();
 paris.render();
+// paris.footer();
 
 lima.getCoustemrs();
 lima.calcCockies();
 lima.render();
+// lima.footer();
 
+footer();
 
 
 
